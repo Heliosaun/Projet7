@@ -32,9 +32,9 @@ def main():
 
 @st.cache_data
 def load_data_and_model():
-    data = pd.read_csv('../../data/data.csv', index_col='SK_ID_CURR', encoding='utf-8')
-    sample = pd.read_csv('../../data/sample.csv', index_col='SK_ID_CURR', encoding='utf-8')
-    clf = pickle.load(open('../model/model_opti_lgbm_final.pkl', 'rb'))
+    data = pd.read_csv('data.csv', index_col='SK_ID_CURR', encoding='utf-8')
+    sample = pd.read_csv('data/sample.csv', index_col='SK_ID_CURR', encoding='utf-8')
+    clf = pickle.load(open('model_opti_lgbm_final.pkl', 'rb'))
     return data, sample, clf
 
 def display_client_solvability(sample, chk_id, clf):
