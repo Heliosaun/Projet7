@@ -39,8 +39,8 @@ def load_data_and_model():
 
 def display_client_solvability(sample, chk_id, clf):
     score = clf.predict_proba(sample[sample.index == int(chk_id)].iloc[:, :-1])[0, 1]
-    decision = "CREDIT ACCORDE" if score < 0.5 else "CREDIT REFUSE"
-    decision_color = "green" if score < 0.5 else "red"
+    decision = "CREDIT ACCORDE" if score < 0.3 else "CREDIT REFUSE"
+    decision_color = "green" if score < 0.3 else "red"
     
     # Affichage de la décision en gros caractères
     st.markdown(f'<h2 style="color: {decision_color};">{decision}</h2>', unsafe_allow_html=True)
@@ -58,9 +58,9 @@ def display_probability_gauge(score):
             'axis': {'range': [0, 100]},
             'bar': {'color': "lightgray"},
             'steps': [
-                {'range': [0, 40], 'color': 'green'},
-                {'range': [40, 50], 'color': 'yellow'},
-                {'range': [50, 100], 'color': 'red'}
+                {'range': [0, 30], 'color': 'green'},
+                {'range': [30, 40], 'color': 'yellow'},
+                {'range': [40, 100], 'color': 'red'}
             ],
         }
     ))
@@ -113,8 +113,8 @@ def display_feature_importance(sample, chk_id, clf):
     st.pyplot(fig)
         
 def get_credit_decision(score):
-    decision = "CREDIT ACCORDE" if score < 0.5 else "CREDIT REFUSE"
-    decision_color = "green" if score < 0.5 else "red"
+    decision = "CREDIT ACCORDE" if score < 0.3 else "CREDIT REFUSE"
+    decision_color = "green" if score < 0.3 else "red"
     return decision, decision_color
 
 @st.cache_data()
