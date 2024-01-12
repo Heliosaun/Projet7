@@ -1,5 +1,6 @@
 fastapi==0.103.0
 flask==3.0.0
+httpx==0.26.0
 ipython==8.15.0
 lightgbm==4.1.0
 matplotlib==3.8.0
