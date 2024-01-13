@@ -4,6 +4,9 @@ from pydantic import BaseModel
 import pandas as pd
 import pickle
 from typing import List
+from fastapi.responses import FileResponse
+import matplotlib.pyplot as plt
+import os
 
 app = FastAPI()
 
@@ -49,11 +52,11 @@ def welcome():
 # test local : http://127.0.0.1:8000/credit/
 @app.get("/credit", response_model=ItemResponse)
 def liste_identifiants():
-    idx_client_list = data_test.index.tolist()
     return {
         "liste_features": liste_features,
-        "idx_client": idx_client_list,
+        "idx_client": liste_id,
     }
+
 
 # test local : http://127.0.0.1:8000/credit/430080/predict 
 @app.get("/credit/{id_client}/predict", response_model=ProbabilityResponseModel)
@@ -80,14 +83,22 @@ def donnees_client(id_client: int):
         raise HTTPException(status_code=404, detail="ID inconnu")
 
 # test local : http://127.0.0.1:8000/credit/430080/shap
-@app.get("/credit/{id_client}/shap", response_model=ShapValuesResponseModel)
+@app.get("/credit/{id_client}/shap")
 def shap_values_client(id_client: int):
     if id_client in liste_id:
         idx = liste_id.index(id_client)
         data_client = data_test.iloc[idx:idx+1]
+        
+        feature_names = data_test.columns[1:].tolist()
+        
+        explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(data_client)
-        shap_data_flat = [float(val) for val in shap_values[0].ravel()]
-        return {"shap_val": shap_data_flat}
+        
+        # Renvoyer les valeurs SHAP et les noms des caractéristiques
+        return {
+            "shap_val": shap_values[0].tolist(),
+            "feature_names": data_test.columns.tolist()
+        }
     else:
         raise HTTPException(status_code=404, detail="ID inconnu")
         
