@@ -98,7 +98,7 @@ def display_shap_values(api_url, client_id):
 
 def main():
     st.title("Dashboard Scoring Credit")
-    api_url = "http://127.0.0.1:8000/"
+    api_url = "https://p7-app-068fe8868110.herokuapp.com/"
     
     try:
         response = requests.get(f"{api_url}credit")
